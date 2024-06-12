@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Permit to Work</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .half-width {
+            flex: 1;
+            min-width: 48%;
+            box-sizing: border-box;
+        }
+        .full-width {
+            width: 100%;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        .risk-table {
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+        .risk-table td {
+            width: 50px;
+            height: 50px;
+            position: relative;
+        }
+        .risk-table td.low {
+            background-color: #66ff66;
+        }
+        .risk-table td.medium {
+            background-color: #ffcc00;
+        }
+        .risk-table td.high {
+            background-color: #ff6666;
+        }
+        .mark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: red;
+        }
+        .ack-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .ack-row div {
+            flex: 1;
+        }
+        .logo {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 150px;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .checkbox-group label {
+            width: 48%;
+        }
+        .control-measures {
+            min-height: 150px;
+        }
+        .submit-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .submit-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABr0lEQVQ4T42TzUtUURjHf/fm3puNNtN0x7aJbC6KFkMVEGQj4IpQhZsykGIEEZJf8UBFG4kRBMCWjQsXEBL2xW6aqKRFxkFiEPDQAQoHpNE3TdeZ/O+c6HdSGBm7Mm9m+Zx7XHfnLE3zguS2G0SBhU53Vk67OTKTmql4AZC2Dh+9wBW/84K/zey8XhA3cP4hxDN0ZX6L3wBMV8fHaU5yGggWFXLOMGmjG5IK5qk5O6A9ezkOxA5pQTAfb9t8VXfLgX9lC7PX4KKAlXxGC9IfN0QweF51Zn+ZPdrENKApZX8L2i7b0ocPxK9I6ah5mQfgs1Bl5ms0H+5DjqRYEv7iH6zJ2bV7HtI7bhLNFOc3bwZ3vQtk2bN4tTqeeMAwEIMaa8wstOuVfUthJke8FV0gp5WenY0yE/14OnfxTrrLktbiG3wnul3+uShj3N7brWZwEpOHlbksxwU/4z6eDyzOvZDL1S0JgTGrfRYNRDFaYlTiRYTcvSHptfbYXMFxDEpS/ZHzBNv0AbcvClER7vzy2aU0V5I2wAAAABJRU5ErkJggg==" alt="Crown Prince Court Logo">
+    </div>
+    <h1>Permit to Work</h1>
+
+    <form action="https://formspree.io/f/{your_form_id}" method="POST">
+        <!-- First Section: Contractor Details and Project Details -->
+        <div class="section full-width">
+            <div class="flex-container">
+                <div class="half-width">
+                    <h2>Contractor Details</h2>
+                    <label for="contractor-details">Details</label>
+                    <textarea id="contractor-details" name="contractor-details" rows="4" required></textarea>
+                    <label for="contractor-mobile">Mobile No.</label>
+                    <input type="tel" id="contractor-mobile" name="contractor-mobile" required>
+                    <label for="contractor-email">Email</label>
+                    <input type="email" id="contractor-email" name="contractor-email" required>
+                    <label for="contractor-pm">Project Manager</label>
+                    <input type="text" id="contractor-pm" name="contractor-pm" required>
+                </div>
+                <div class="half-width">
+                    <h2>Project Details</h2>
+                    <label for="project-description">Description</label>
+                    <textarea id="project-description" name="project-description" rows="4" required></textarea>
+                    <label for="project-location">Location</label>
+                    <input type="text" id="project-location" name="project-location" required>
+                    <label for="project-start-date">Start Date</label>
+                    <input type="date" id="project-start-date" name="project-start-date" required>
+                    <label for="project-end-date">End Date</label>
+                    <input type="date" id="project-end-date" name="project-end-date" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Section: 5x5 Risk Classification, Hazards and Control Measures, and PPE -->
+        <div class="section full-width">
+            <div class="flex-container">
+                <div class="half-width">
+                    <h2>5x5 Risk Classification</h2>
+                    <table class="risk-table">
+                        <tr>
+                            <td class="low"><div class="mark" id="mark-1"></div>1</td>
+                            <td class="low"><div class="mark" id="mark-2"></div>2</td>
+                            <td class="medium"><div class="mark" id="mark-3"></div>3</td>
+                            <td class="medium"><div class="mark" id="mark-4"></div>4</td>
+                            <td class="high"><div class="mark" id="mark-5"></div>5</td>
+                        </tr>
+                        <tr>
+                            <td class="low"><div class="mark" id="mark-6"></div>2</td>
+                            <td class="low"><div class="mark" id="mark-7"></div>4</td>
+                            <td class="medium"><div class="mark" id="mark-8"></div>6</td>
+                            <td class="medium"><div class="mark" id="mark-9"></div>8</td>
+                            <td class="high"><div class="mark" id="mark-10"></div>10</td>
+                        </tr>
+                        <tr>
+                            <td class="medium"><div class="mark" id="mark-11"></div>3</td>
+                            <td class="medium"><div class="mark" id="mark-12"></div>6</td>
+                            <td class="medium"><div class="mark" id="mark-13"></div>9</td>
+                            <td class="high"><div class="mark" id="mark-14"></div>12</td>
+                            <td class="high"><div class="mark" id="mark-15"></div>15</td>
+                        </tr>
+                        <tr>
+                            <td class="medium"><div class="mark" id="mark-16"></div>4</td>
+                            <td class="medium"><div class="mark" id="mark-17"></div>8</td>
+                            <td class="high"><div class="mark" id="mark-18"></div>12</td>
+                            <td class="high"><div class="mark" id="mark-19"></div>16</td>
+                            <td class="high"><div class="mark" id="mark-20"></div>20</td>
+                        </tr>
+                        <tr>
+                            <td class="high"><div class="mark" id="mark-21"></div>5</td>
+                            <td class="high"><div class="mark" id="mark-22"></div>10</td>
+                            <td class="high"><div class="mark" id="mark-23"></div>15</td>
+                            <td class="high"><div class="mark" id="mark-24"></div>20</td>
+                            <td class="high"><div class="mark" id="mark-25"></div>25</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="half-width">
+                    <h2>Hazards and Control Measures</h2>
+                    <label for="hazards">Select a hazard:</label>
+                    <select id="hazards" name="hazards" onchange="showControls()">
+                        <option value="chemical">Chemical Exposure</option>
+                        <option value="electricity">Electricity Hazards</option>
+                        <option value="falling">Falling Objects</option>
+                        <option value="noise">High Noise Levels</option>
+                        <option value="height">Working at Height</option>
+                        <option value="confined">Confined Space</option>
+                        <option value="manual">Manual Handling</option>
+                        <option value="fire">Fire</option>
+                    </select>
+                    <div id="controls" class="control-measures">
+                        <h3>Control Measures:</h3>
+                        <ul id="controlList">
+                            <!-- Example control measures (replace with dynamic content) -->
+                            <li>Elimination: Remove unnecessary electrical equipment.</li>
+                            <li>Reduction: Use lower voltage equipment.</li>
+                            <li>Isolation: Enclose electrical components and use barriers.</li>
+                            <li>Control: Install residual current devices (RCDs) and grounding.</li>
+                            <li>PPE: Use insulated gloves and tools.</li>
+                            <li>Discipline: Training on electrical safety and lockout/tagout procedures.</li>
+                        </ul>
+                    </div>
+                    <h2>Personal Protective Equipment (PPE)</h2>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="ppe" value="helmet"> Helmet</label>
+                        <label><input type="checkbox" name="ppe" value="gloves"> Gloves</label>
+                        <label><input type="checkbox" name="ppe" value="goggles"> Goggles</label>
+                        <label><input type="checkbox" name="ppe" value="respirator"> Respirator</label>
+                        <label><input type="checkbox" name="ppe" value="earplugs"> Earplugs</label>
+                        <label><input type="checkbox" name="ppe" value="safety-shoes"> Safety Shoes</label>
+                        <label><input type="checkbox" name="ppe" value="harness"> Harness</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Third Section: Acknowledgment and Approval and Completion, Closing, Cancel -->
+        <div class="section full-width">
+            <div class="flex-container">
+                <div class="half-width">
+                    <h2>Acknowledgment and Approval</h2>
+                    <div class="ack-row">
+                        <div>
+                            <label for="project-manager">Project Manager Signature</label>
+                            <input type="text" id="project-manager" name="project-manager" required>
+                        </div>
+                        <div>
+                            <label for="pm-date">Date</label>
+                            <input type="date" id="pm-date" name="pm-date" required>
+                        </div>
+                        <div>
+                            <label for="pm-remarks">Remarks</label>
+                            <textarea id="pm-remarks" name="pm-remarks" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="ack-row">
+                        <div>
+                            <label for="hse-section">HSE Section Signature</label>
+                            <input type="text" id="hse-section" name="hse-section">
+                        </div>
+                        <div>
+                            <label for="hse-date">Date</label>
+                            <input type="date" id="hse-date" name="hse-date">
+                        </div>
+                        <div>
+                            <label for="hse-remarks">Remarks</label>
+                            <textarea id="hse-remarks" name="hse-remarks" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="ack-row">
+                        <div>
+                            <label for="security-section">Security Section Signature</label>
+                            <input type="text" id="security-section" name="security-section">
+                        </div>
+                        <div>
+                            <label for="security-date">Date</label>
+                            <input type="date" id="security-date" name="security-date">
+                        </div>
+                        <div>
+                            <label for="security-remarks">Remarks</label>
+                            <textarea id="security-remarks" name="security-remarks" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="half-width">
+                    <h2>Completion, Closing, Cancel</h2>
+                    <label><input type="checkbox" name="status" value="completed"> Completed</label>
+                    <label><input type="checkbox" name="status" value="closed"> Closed</label>
+                    <label><input type="checkbox" name="status" value="cancelled"> Cancelled</label>
+                    <label for="comments">Comments/Remarks</label>
+                    <textarea id="comments" name="comments" rows="4"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Section -->
+        <div class="submit-section">
+            <button type="submit" class="submit-button">Submit</button>
+        </div>
+    </form>
+
+    <script>
+        const controlMeasures = {
+            "chemical": ["Elimination: Substitute with less hazardous chemicals.", "Reduction: Use less of the chemical or reduce exposure time.", "Isolation: Use fume hoods and ventilation systems.", "Control: Implement engineering controls such as closed systems.", "PPE: Wear gloves, goggles, and respirators.", "Discipline: Training on proper handling, storage, and emergency procedures."],
+            "electricity": ["Elimination: Remove unnecessary electrical equipment.", "Reduction: Use lower voltage equipment.", "Isolation: Enclose electrical components and use barriers.", "Control: Install residual current devices (RCDs) and grounding.", "PPE: Use insulated gloves and tools.", "Discipline: Training on electrical safety and lockout/tagout procedures."],
+            "falling": ["Elimination: Remove hazards above head height.", "Reduction: Secure all objects at height.", "Isolation: Use guardrails and toeboards.", "Control: Install netting or catch platforms.", "PPE: Wear hard hats.", "Discipline: Training on safe stacking and securing procedures."],
+            "noise": ["Elimination: Remove noisy equipment.", "Reduction: Use quieter machinery.", "Isolation: Enclose noisy areas.", "Control: Implement engineering controls like sound dampening materials.", "PPE: Use earplugs or earmuffs.", "Discipline: Training on hearing conservation and noise monitoring."],
+            "height": ["Elimination: Perform work at ground level when possible.", "Reduction: Minimize the time spent working at height.", "Isolation: Use guardrails and barriers.", "Control: Implement fall arrest systems.", "PPE: Use harnesses and lanyards.", "Discipline: Training on safe work practices and risk assessments."],
+            "confined": ["Elimination: Avoid entry if possible.", "Reduction: Minimize time spent in the confined space.", "Isolation: Use barriers to prevent unauthorized entry.", "Control: Ensure proper ventilation and continuous monitoring.", "PPE: Use appropriate respirators and protective clothing.", "Discipline: Training on confined space entry procedures and emergency response."],
+            "manual": ["Elimination: Use mechanical aids.", "Reduction: Reduce the weight of items.", "Isolation: Reorganize the workspace to minimize manual handling.", "Control: Implement engineering controls like adjustable workstations.", "PPE: Use supportive braces.", "Discipline: Training on proper lifting techniques and ergonomic assessments."],
+            "fire": ["Elimination: Remove flammable materials.", "Reduction: Minimize the quantity of flammable materials.", "Isolation: Use fire-resistant barriers and enclosures.", "Control: Install fire detection and suppression systems.", "PPE: Provide fire-resistant clothing.", "Discipline: Training on fire safety, evacuation plans, and regular fire drills."]
+        };
+
+        function showControls() {
+            const selectedHazard = document.getElementById('hazards').value;
+            const controlList = document.getElementById('controlList');
+            controlList.innerHTML = '';
+
+            if (controlMeasures[selectedHazard]) {
+                controlMeasures[selectedHazard].forEach(measure => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = measure;
+                    controlList.appendChild(listItem);
+                });
+                document.getElementById('controls').style.display = 'block';
+                updateRiskMark(selectedHazard);
+            } else {
+                document.getElementById('controls').style.display = 'none';
+            }
+        }
+
+        function updateRiskMark(hazard) {
+            const marks = document.querySelectorAll('.mark');
+            marks.forEach(mark => mark.textContent = '');
+
+            const hazardRisk = {
+                "chemical": 15,
+                "electricity": 12,
+                "falling": 8,
+                "noise": 6,
+                "height": 20,
+                "confined": 16,
+                "manual": 9,
+                "fire": 25
+            };
+
+            const riskValue = hazardRisk[hazard];
+            document.getElementById(`mark-${riskValue}`).textContent = 'X';
+        }
+    </script>
+</body>
+</html>
