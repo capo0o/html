@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <style>
+    .dashboard-container {
+      max-width: 800px;
+      margin: auto;
+    }
+    #dataTable {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    #dataTable th, #dataTable td {
+      border: 1px solid #ccc;
+      padding: 8px;
+    }
+    #searchInput {
+      margin-top: 20px;
+      padding: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <h1>Interactive Dashboard</h1>
+    <input type="text" id="searchInput" placeholder="Search by name...">
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <canvas id="chart" width="400" height="200"></canvas>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="scripts/dashboard.js"></script>
+</body>
+</html>
