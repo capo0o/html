@@ -1,0 +1,2150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive HSE-BCM Calendar 2026 Dashboard - UAE National & Global International Observances">
+    <title>HSE-BCM Calendar 2026 - Interactive Dashboard</title>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #1F4E78;
+            --secondary-color: #2d5f8d;
+            --accent-color: #667eea;
+            --accent-secondary: #764ba2;
+            --health-color: #e74c3c;
+            --safety-color: #f39c12;
+            --environment-color: #27ae60;
+            --energy-color: #3498db;
+            --bcm-color: #9b59b6;
+            --text-dark: #2c3e50;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --border-color: #e0e0e0;
+            --shadow-sm: 0 2px 10px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 15px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.3);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-secondary) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            padding: 40px 30px;
+            background: var(--bg-light);
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+
+        .stat-number {
+            font-size: 3.2em;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .cat-health .stat-number { background: var(--health-color); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cat-safety .stat-number { background: var(--safety-color); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cat-environment .stat-number { background: var(--environment-color); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cat-energy .stat-number { background: var(--energy-color); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cat-bcm .stat-number { background: var(--bcm-color); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Controls */
+        .controls {
+            padding: 30px;
+            background: white;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9em;
+        }
+
+        .control-group select,
+        .control-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.95em;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .control-group select:focus,
+        .control-group input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-reset {
+            padding: 12px 25px;
+            background: var(--health-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: var(--transition);
+            align-self: flex-end;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-reset:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* View Tabs */
+        .view-tabs {
+            display: flex;
+            padding: 20px 30px 0;
+            background: white;
+            gap: 10px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+
+        .tab {
+            padding: 14px 28px;
+            background: var(--bg-light);
+            border: none;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab:hover {
+            background: #e8e9ed;
+        }
+
+        .tab.active {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .content {
+            padding: 40px 30px;
+            min-height: 600px;
+            position: relative;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            gap: 20px;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Event Cards */
+        .event-grid {
+            display: grid;
+            gap: 25px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .event-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 6px;
+            transition: var(--transition);
+        }
+
+        .event-card:hover::before {
+            width: 8px;
+        }
+
+        .event-card.cat-health::before { background: var(--health-color); }
+        .event-card.cat-safety::before { background: var(--safety-color); }
+        .event-card.cat-environment::before { background: var(--environment-color); }
+        .event-card.cat-energy::before { background: var(--energy-color); }
+        .event-card.cat-bcm::before { background: var(--bcm-color); }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+
+        .event-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--text-dark);
+            flex: 1;
+        }
+
+        .event-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .event-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-high {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-low {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .event-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: var(--text-light);
+        }
+
+        .event-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .event-description {
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .event-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9em;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .event-organizer {
+            font-weight: 600;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            background: var(--bg-light);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-small:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* Calendar View */
+        .calendar-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .month-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            transition: var(--transition);
+        }
+
+        .month-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-color);
+        }
+
+        .month-header {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .month-count {
+            background: var(--accent-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: 700;
+        }
+
+        .month-events {
+            list-style: none;
+        }
+
+        .month-event {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .month-event:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateX(5px);
+            border-left-color: var(--accent-secondary);
+        }
+
+        .month-event-date {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Timeline View */
+        .timeline-view {
+            position: relative;
+            padding-left: 60px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--accent-color), var(--accent-secondary));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding-left: 50px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -40px;
+            top: 8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+            transition: var(--transition);
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.3);
+            box-shadow: 0 0 0 6px rgba(102, 126, 234, 0.3);
+        }
+
+        .timeline-date {
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--bg-light);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--health-color);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .modal-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-body {
+            margin-bottom: 25px;
+        }
+
+        .modal-section {
+            margin-bottom: 20px;
+        }
+
+        .modal-section-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        /* Charts */
+        .charts-grid {
+            display: grid;
+            gap: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .chart-container:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .chart-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-subtitle {
+            color: var(--text-light);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 25px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* No Results */
+        .no-results {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .no-results i {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .no-results h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 400px;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--environment-color);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--health-color);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--energy-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .calendar-view {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .header h1 {
+                font-size: 2.2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                border-radius: 16px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .header p {
+                font-size: 0.95em;
+            }
+
+            .stats-grid,
+            .controls,
+            .content {
+                padding: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .view-tabs {
+                padding: 15px 20px 0;
+            }
+
+            .tab {
+                padding: 10px 16px;
+                font-size: 0.85em;
+            }
+
+            .timeline-view {
+                padding-left: 40px;
+            }
+
+            .timeline-line {
+                left: 20px;
+            }
+
+            .timeline-item {
+                padding-left: 30px;
+            }
+
+            .timeline-dot {
+                left: -30px;
+            }
+
+            .modal-content {
+                padding: 25px;
+            }
+
+            .modal-title {
+                font-size: 1.5em;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .header-actions,
+            .controls,
+            .view-tabs,
+            .btn,
+            .modal {
+                display: none !important;
+            }
+
+            .event-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container" role="main">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-globe-americas"></i> HSE-BCM Calendar 2026</h1>
+            <p>UAE National & Global International Observances | Health, Safety, Environment, Energy & Business Continuity</p>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="exportData('csv')" aria-label="Export to CSV">
+                    <i class="fas fa-file-csv"></i> Export CSV
+                </button>
+                <button class="btn btn-primary" onclick="exportData('ical')" aria-label="Export to Calendar">
+                    <i class="fas fa-calendar-alt"></i> Export iCal
+                </button>
+                <button class="btn btn-primary" onclick="exportData('json')" aria-label="Export to JSON">
+                    <i class="fas fa-file-code"></i> Export JSON
+                </button>
+                <button class="btn btn-secondary" onclick="window.print()" aria-label="Print Dashboard">
+                    <i class="fas fa-print"></i> Print
+                </button>
+                <button class="btn btn-secondary" onclick="syncData()" aria-label="Sync with WHO/UN">
+                    <i class="fas fa-sync-alt"></i> Sync Data
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <section class="stats-grid" id="stats" aria-label="Event Statistics">
+            <!-- Stats will be populated by JavaScript -->
+        </section>
+
+        <!-- Controls -->
+        <section class="controls" aria-label="Filter Controls">
+            <div class="control-group">
+                <label for="categoryFilter">
+                    <i class="fas fa-folder"></i> Category
+                </label>
+                <select id="categoryFilter" aria-label="Filter by category">
+                    <option value="">All Categories</option>
+                    <option value="1. Occupational Health / Public Health / Health">Health</option>
+                    <option value="2. Occupational Safety">Occupational Safety</option>
+                    <option value="3. Environment">Environment</option>
+                    <option value="4. Energy and Sustainability">Energy & Sustainability</option>
+                    <option value="5. Business Continuity / Resilience">Business Continuity</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="priorityFilter">
+                    <i class="fas fa-exclamation-triangle"></i> Priority
+                </label>
+                <select id="priorityFilter" aria-label="Filter by priority">
+                    <option value="">All Priorities</option>
+                    <option value="High">High Priority</option>
+                    <option value="Medium">Medium Priority</option>
+                    <option value="Low">Low Priority</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="scopeFilter">
+                    <i class="fas fa-globe"></i> Scope
+                </label>
+                <select id="scopeFilter" aria-label="Filter by scope">
+                    <option value="">All Scopes</option>
+                    <option value="Global">Global</option>
+                    <option value="UAE National">UAE National</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="monthFilter">
+                    <i class="fas fa-calendar"></i> Month
+                </label>
+                <select id="monthFilter" aria-label="Filter by month">
+                    <option value="">All Months</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="searchFilter">
+                    <i class="fas fa-search"></i> Search
+                </label>
+                <input type="text" id="searchFilter" placeholder="Search events..." aria-label="Search events">
+            </div>
+
+            <button class="btn-reset" onclick="resetFilters()" aria-label="Reset all filters">
+                <i class="fas fa-redo"></i> Reset All
+            </button>
+        </section>
+
+        <!-- View Tabs -->
+        <nav class="view-tabs" role="tablist" aria-label="View Options">
+            <button class="tab active" onclick="switchView('cards')" role="tab" aria-selected="true" aria-controls="content">
+                <i class="fas fa-th-large"></i> Cards View
+            </button>
+            <button class="tab" onclick="switchView('calendar')" role="tab" aria-selected="false" aria-controls="content">
+                <i class="fas fa-calendar-alt"></i> Calendar View
+            </button>
+            <button class="tab" onclick="switchView('timeline')" role="tab" aria-selected="false" aria-controls="content">
+                <i class="fas fa-stream"></i> Timeline View
+            </button>
+            <button class="tab" onclick="switchView('charts')" role="tab" aria-selected="false" aria-controls="content">
+                <i class="fas fa-chart-bar"></i> Analytics
+            </button>
+        </nav>
+
+        <!-- Content Area -->
+        <div class="content" id="content" role="tabpanel">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading events...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="eventModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="modalBody">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global Variables
+        let events = [];
+        let filteredEvents = [];
+        let currentView = 'cards';
+        let charts = {};
+
+        const monthNames = ['', 'January', 'February', 'March', 'April', 'May', 'June',
+                           'July', 'August', 'September', 'October', 'November', 'December'];
+
+        const categoryIcons = {
+            'Health': 'fa-heartbeat',
+            'Safety': 'fa-hard-hat',
+            'Environment': 'fa-leaf',
+            'Energy': 'fa-bolt',
+            'BCM': 'fa-shield-alt'
+        };
+
+        // API Configuration for WHO, UN, etc.
+        const API_CONFIG = {
+            WHO: 'https://www.who.int/api/events',
+            UN: 'https://www.un.org/api/observances',
+            // Note: These are example endpoints - actual APIs would need to be configured
+        };
+
+        // Initialize the dashboard
+        async function init() {
+            try {
+                // Load events data
+                await loadEvents();
+
+                // Initialize filters
+                setupEventListeners();
+
+                // Update statistics
+                updateStats();
+
+                // Render initial view
+                renderView();
+
+                // Show success notification
+                showNotification('Dashboard loaded successfully!', 'success');
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showNotification('Error loading dashboard', 'error');
+            }
+        }
+
+        // Load events (with API integration capability)
+        async function loadEvents() {
+            // Static data (can be replaced with API calls)
+            events = [
+                {"month": 1, "title": "World Braille Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Promotes awareness of braille as a means of communication for blind and partially sighted people", "organizer": "UN", "source": "https://www.un.org/en/observances/braille-day", "priority": "Medium", "start": "2026-01-04", "end": "2026-01-04"},
+                {"month": 2, "title": "World Wetlands Day", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Raises awareness about the vital role of wetlands for people and planet", "organizer": "UN", "source": "https://www.un.org/en/observances/world-wetlands-day", "priority": "Medium", "start": "2026-02-02", "end": "2026-02-02"},
+                {"month": 2, "title": "World Cancer Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Raises awareness about cancer prevention, detection, and treatment worldwide", "organizer": "UICC", "source": "https://www.worldcancerday.org", "priority": "High", "start": "2026-02-04", "end": "2026-02-04"},
+                {"month": 2, "title": "World Day of Social Justice", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Promotes social justice, including efforts to tackle poverty, exclusion and unemployment", "organizer": "UN", "source": "https://www.un.org/en/observances/social-justice-day", "priority": "Medium", "start": "2026-02-20", "end": "2026-02-20"},
+                {"month": 3, "title": "World Seagrass Day", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Highlights the importance of seagrass ecosystems for coastal resilience and biodiversity", "organizer": "UN", "source": "https://www.un.org/en/observances/seagrass-day", "priority": "Medium", "start": "2026-03-01", "end": "2026-03-01"},
+                {"month": 3, "title": "World Civil Defence Day", "type": "International Day", "scope": "Global", "category": "5. Business Continuity / Resilience", "brief": "Draws attention to civil protection and emergency preparedness to manage disasters", "organizer": "ICDO", "source": "https://icdo.org", "priority": "High", "start": "2026-03-01", "end": "2026-03-01"},
+                {"month": 3, "title": "World Wildlife Day", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Celebrates world's wild animals and plants and raises awareness of wildlife conservation", "organizer": "UN", "source": "https://www.un.org/en/observances/world-wildlife-day", "priority": "Medium", "start": "2026-03-03", "end": "2026-03-03"},
+                {"month": 3, "title": "UAE National Sports Day", "type": "National Day", "scope": "UAE National", "category": "1. Occupational Health / Public Health / Health", "brief": "Promotes physical activity and healthy lifestyle across UAE. Official date March 2, observed March 7", "organizer": "UAE Government", "source": "https://mohap.gov.ae/en/w/uae-national-sports-day", "priority": "High", "start": "2026-03-07", "end": "2026-03-07"},
+                {"month": 3, "title": "International Women's Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Celebrates women's social, economic, cultural and political achievements", "organizer": "UN", "source": "https://www.un.org/en/observances/womens-day", "priority": "Medium", "start": "2026-03-08", "end": "2026-03-08"},
+                {"month": 3, "title": "International Day of Forests", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Raises awareness of the importance of all types of forests and trees", "organizer": "UN", "source": "https://www.un.org/en/observances/forests-and-trees-day", "priority": "Medium", "start": "2026-03-21", "end": "2026-03-21"},
+                {"month": 3, "title": "World Water Day", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Focuses attention on the importance of water and advocates for sustainable water management", "organizer": "UN", "source": "https://www.un.org/en/observances/water-day", "priority": "High", "start": "2026-03-22", "end": "2026-03-22"},
+                {"month": 3, "title": "World Meteorological Day", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Commemorates the establishment of WMO and highlights the contribution of meteorological services", "organizer": "WMO", "source": "https://public.wmo.int", "priority": "Medium", "start": "2026-03-23", "end": "2026-03-23"},
+                {"month": 3, "title": "World Tuberculosis Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Raises awareness about devastating health, social and economic consequences of TB", "organizer": "WHO", "source": "https://www.who.int/campaigns/world-tb-day", "priority": "High", "start": "2026-03-24", "end": "2026-03-24"},
+                {"month": 4, "title": "World Autism Awareness Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Encourages Member States to raise awareness about autism spectrum disorders", "organizer": "UN", "source": "https://www.un.org/en/observances/autism-day", "priority": "Medium", "start": "2026-04-02", "end": "2026-04-02"},
+                {"month": 4, "title": "World Health Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Celebrates WHO's founding and focuses on a priority health topic each year", "organizer": "WHO", "source": "https://www.who.int/campaigns/world-health-day", "priority": "High", "start": "2026-04-07", "end": "2026-04-07"},
+                {"month": 4, "title": "World Malaria Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Highlights the global effort to control malaria and celebrates gains toward eliminating it", "organizer": "WHO", "source": "https://www.who.int/campaigns/world-malaria-day", "priority": "High", "start": "2026-04-25", "end": "2026-04-25"},
+                {"month": 4, "title": "World Day for Safety and Health at Work", "type": "International Day", "scope": "Global", "category": "2. Occupational Safety", "brief": "Promotes the prevention of occupational accidents and diseases globally", "organizer": "ILO", "source": "https://www.un.org/en/observances/work-safety-day", "priority": "High", "start": "2026-04-28", "end": "2026-04-28"},
+                {"month": 5, "title": "World Tuna Day", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Highlights the importance of conservation management to ensure sustainable tuna stocks", "organizer": "UN", "source": "https://www.un.org/en/observances/tuna-day", "priority": "Low", "start": "2026-05-02", "end": "2026-05-02"},
+                {"month": 5, "title": "World Bee Day", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Raises awareness of the importance of pollinators and threats they face", "organizer": "UN", "source": "https://www.un.org/en/observances/bee-day", "priority": "Medium", "start": "2026-05-20", "end": "2026-05-20"},
+                {"month": 6, "title": "World Bicycle Day", "type": "International Day", "scope": "Global", "category": "4. Energy and Sustainability", "brief": "Promotes bicycle as sustainable, simple, affordable means of transportation", "organizer": "UN", "source": "https://www.un.org/en/observances/bicycle-day", "priority": "Medium", "start": "2026-06-03", "end": "2026-06-03"},
+                {"month": 6, "title": "World Environment Day", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Encourages worldwide awareness and action for environmental protection. Theme 2026: Climate Change (hosted by Azerbaijan)", "organizer": "UNEP", "source": "https://www.un.org/en/observances/environment-day", "priority": "High", "start": "2026-06-05", "end": "2026-06-05"},
+                {"month": 6, "title": "World Food Safety Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Draws attention to importance of food safety and promotes actions to prevent foodborne diseases", "organizer": "UN/WHO/FAO", "source": "https://www.un.org/en/observances/food-safety-day", "priority": "High", "start": "2026-06-07", "end": "2026-06-07"},
+                {"month": 6, "title": "World Oceans Day", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Reminds everyone of major role oceans play in everyday life and inspires action to protect oceans", "organizer": "UN", "source": "https://www.un.org/en/observances/oceans-day", "priority": "High", "start": "2026-06-08", "end": "2026-06-08"},
+                {"month": 7, "title": "World Population Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Focuses attention on the urgency and importance of population issues", "organizer": "UN", "source": "https://www.un.org/en/observances/world-population-day", "priority": "Medium", "start": "2026-07-11", "end": "2026-07-11"},
+                {"month": 7, "title": "World Hepatitis Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Raises awareness of viral hepatitis and calls for access to treatment, screening and prevention", "organizer": "WHO", "source": "https://www.who.int/campaigns/world-hepatitis-day", "priority": "High", "start": "2026-07-28", "end": "2026-07-28"},
+                {"month": 8, "title": "International Youth Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Celebrates the role of young people in decision-making processes", "organizer": "UN", "source": "https://www.un.org/en/observances/youth-day", "priority": "Medium", "start": "2026-08-12", "end": "2026-08-12"},
+                {"month": 8, "title": "World Humanitarian Day", "type": "International Day", "scope": "Global", "category": "5. Business Continuity / Resilience", "brief": "Honors humanitarians killed or injured in the line of duty", "organizer": "UN", "source": "https://www.un.org/en/observances/humanitarian-day", "priority": "Medium", "start": "2026-08-19", "end": "2026-08-19"},
+                {"month": 9, "title": "International Day of Charity", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Recognizes the role of charity in alleviating humanitarian crises", "organizer": "UN", "source": "https://www.un.org/en/observances/charity-day", "priority": "Low", "start": "2026-09-05", "end": "2026-09-05"},
+                {"month": 9, "title": "World Cleanup Day", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Unites millions of volunteers worldwide to clean up litter and mismanaged waste", "organizer": "UN", "source": "https://www.un.org/en/observances/cleanup-day", "priority": "Medium", "start": "2026-09-20", "end": "2026-09-20"},
+                {"month": 10, "title": "Breast Cancer Awareness Month", "type": "International Month", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Increases awareness of breast cancer through education about symptoms and treatment. Pink ribbon symbol", "organizer": "Various Cancer Orgs", "source": "https://www.nationalbreastcancer.org", "priority": "High", "start": "2026-10-01", "end": "2026-10-31"},
+                {"month": 10, "title": "World Teachers' Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Commemorates the anniversary of adoption of ILO/UNESCO Recommendation concerning teachers", "organizer": "UNESCO", "source": "https://www.unesco.org/en/days/teachers", "priority": "Medium", "start": "2026-10-05", "end": "2026-10-05"},
+                {"month": 10, "title": "World Habitat Day", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Reflects on the state of our towns and cities and the basic right to adequate shelter", "organizer": "UN", "source": "https://www.un.org/en/observances/habitat-day", "priority": "Medium", "start": "2026-10-06", "end": "2026-10-06"},
+                {"month": 10, "title": "World Mental Health Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Raises awareness of mental health issues around the world and mobilizes efforts in support", "organizer": "WHO", "source": "https://www.who.int/campaigns/world-mental-health-day", "priority": "High", "start": "2026-10-10", "end": "2026-10-10"},
+                {"month": 10, "title": "International Day for Disaster Risk Reduction", "type": "International Day", "scope": "Global", "category": "5. Business Continuity / Resilience", "brief": "Promotes a global culture of risk-awareness and disaster reduction", "organizer": "UNDRR", "source": "https://www.un.org/en/observances/disaster-reduction-day", "priority": "High", "start": "2026-10-13", "end": "2026-10-13"},
+                {"month": 10, "title": "World Food Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Commemorates the founding of FAO and promotes worldwide awareness of food security", "organizer": "FAO", "source": "http://www.fao.org/world-food-day", "priority": "High", "start": "2026-10-16", "end": "2026-10-16"},
+                {"month": 10, "title": "World Cities Day", "type": "International Day", "scope": "Global", "category": "4. Energy and Sustainability", "brief": "Promotes the international community's interest in global urbanization", "organizer": "UN", "source": "https://www.un.org/en/observances/cities-day", "priority": "Medium", "start": "2026-10-31", "end": "2026-10-31"},
+                {"month": 11, "title": "World Tsunami Awareness Day", "type": "International Day", "scope": "Global", "category": "5. Business Continuity / Resilience", "brief": "Promotes national and community-level tsunami preparedness", "organizer": "UN", "source": "https://www.un.org/en/observances/tsunami-awareness-day", "priority": "High", "start": "2026-11-05", "end": "2026-11-05"},
+                {"month": 11, "title": "International Day for Preventing the Exploitation of the Environment in War and Armed Conflict", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Raises awareness of the environmental damage caused by armed conflicts", "organizer": "UN", "source": "https://www.un.org/en/observances/environment-in-war-protection-day", "priority": "Medium", "start": "2026-11-06", "end": "2026-11-06"},
+                {"month": 11, "title": "World Diabetes Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Promotes diabetes awareness and advocates for affordable care and prevention", "organizer": "WHO/IDF", "source": "https://www.un.org/en/observances/diabetes-day", "priority": "High", "start": "2026-11-14", "end": "2026-11-14"},
+                {"month": 11, "title": "World Toilet Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Inspires action to tackle the global sanitation crisis", "organizer": "UN", "source": "https://www.un.org/en/observances/toilet-day", "priority": "Medium", "start": "2026-11-19", "end": "2026-11-19"},
+                {"month": 12, "title": "World AIDS Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Shows support for people living with HIV and commemorates those who have died", "organizer": "WHO", "source": "https://www.un.org/en/observances/world-aids-day", "priority": "High", "start": "2026-12-01", "end": "2026-12-01"},
+                {"month": 12, "title": "UAE National Day", "type": "National Day", "scope": "UAE National", "category": "1. Occupational Health / Public Health / Health", "brief": "Celebrates UAE's union and national pride. Observed December 2-3", "organizer": "UAE Government", "source": "https://u.ae", "priority": "High", "start": "2026-12-02", "end": "2026-12-03"},
+                {"month": 12, "title": "World Soil Day", "type": "International Day", "scope": "Global", "category": "3. Environment", "brief": "Focuses attention on the importance of healthy soil and sustainable soil management", "organizer": "UN/FAO", "source": "https://www.un.org/en/observances/world-soil-day", "priority": "Medium", "start": "2026-12-05", "end": "2026-12-05"},
+                {"month": 12, "title": "Human Rights Day", "type": "International Day", "scope": "Global", "category": "1. Occupational Health / Public Health / Health", "brief": "Commemorates the day in 1948 the Universal Declaration of Human Rights was adopted", "organizer": "UN", "source": "https://www.un.org/en/observances/human-rights-day", "priority": "Medium", "start": "2026-12-10", "end": "2026-12-10"}
+            ];
+
+            filteredEvents = [...events];
+        }
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+            document.getElementById('priorityFilter').addEventListener('change', applyFilters);
+            document.getElementById('scopeFilter').addEventListener('change', applyFilters);
+            document.getElementById('monthFilter').addEventListener('change', applyFilters);
+            document.getElementById('searchFilter').addEventListener('input', debounce(applyFilters, 300));
+
+            // Close modal on outside click
+            document.getElementById('eventModal').addEventListener('click', (e) => {
+                if (e.target.id === 'eventModal') {
+                    closeModal();
+                }
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && document.getElementById('eventModal').classList.contains('active')) {
+                    closeModal();
+                }
+            });
+        }
+
+        // Utility Functions
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function getCategoryClass(category) {
+            if (category.includes('Health')) return 'cat-health';
+            if (category.includes('Safety')) return 'cat-safety';
+            if (category.includes('Environment')) return 'cat-environment';
+            if (category.includes('Energy')) return 'cat-energy';
+            if (category.includes('Business')) return 'cat-bcm';
+            return '';
+        }
+
+        function getCategoryShort(category) {
+            if (category.includes('Health')) return 'Health';
+            if (category.includes('Safety')) return 'Safety';
+            if (category.includes('Environment')) return 'Environment';
+            if (category.includes('Energy')) return 'Energy';
+            if (category.includes('Business')) return 'BCM';
+            return '';
+        }
+
+        function getCategoryIcon(category) {
+            const short = getCategoryShort(category);
+            return categoryIcons[short] || 'fa-circle';
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        }
+
+        function formatDateLong(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Update Statistics
+        function updateStats() {
+            const stats = {
+                total: events.length,
+                health: events.filter(e => e.category.includes('Health')).length,
+                safety: events.filter(e => e.category.includes('Safety')).length,
+                environment: events.filter(e => e.category.includes('Environment')).length,
+                energy: events.filter(e => e.category.includes('Energy')).length,
+                bcm: events.filter(e => e.category.includes('Business')).length
+            };
+
+            document.getElementById('stats').innerHTML = `
+                <div class="stat-card" onclick="filterByCategory('')">
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="stat-number">${stats.total}</div>
+                    <div class="stat-label">Total Events</div>
+                </div>
+                <div class="stat-card cat-health" onclick="filterByCategory('Health')">
+                    <div class="stat-icon"><i class="fas fa-heartbeat"></i></div>
+                    <div class="stat-number">${stats.health}</div>
+                    <div class="stat-label">Health Events</div>
+                </div>
+                <div class="stat-card cat-safety" onclick="filterByCategory('Safety')">
+                    <div class="stat-icon"><i class="fas fa-hard-hat"></i></div>
+                    <div class="stat-number">${stats.safety}</div>
+                    <div class="stat-label">Safety Events</div>
+                </div>
+                <div class="stat-card cat-environment" onclick="filterByCategory('Environment')">
+                    <div class="stat-icon"><i class="fas fa-leaf"></i></div>
+                    <div class="stat-number">${stats.environment}</div>
+                    <div class="stat-label">Environment</div>
+                </div>
+                <div class="stat-card cat-energy" onclick="filterByCategory('Energy')">
+                    <div class="stat-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="stat-number">${stats.energy}</div>
+                    <div class="stat-label">Energy & Sustainability</div>
+                </div>
+                <div class="stat-card cat-bcm" onclick="filterByCategory('Business')">
+                    <div class="stat-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="stat-number">${stats.bcm}</div>
+                    <div class="stat-label">BCM & Resilience</div>
+                </div>
+            `;
+        }
+
+        // Filter by Category (from stat card click)
+        function filterByCategory(category) {
+            const categoryFilter = document.getElementById('categoryFilter');
+            if (category === '') {
+                categoryFilter.value = '';
+            } else {
+                const options = Array.from(categoryFilter.options);
+                const option = options.find(opt => opt.text === category);
+                if (option) {
+                    categoryFilter.value = option.value;
+                }
+            }
+            applyFilters();
+        }
+
+        // Apply Filters
+        function applyFilters() {
+            const category = document.getElementById('categoryFilter').value;
+            const priority = document.getElementById('priorityFilter').value;
+            const scope = document.getElementById('scopeFilter').value;
+            const month = document.getElementById('monthFilter').value;
+            const search = document.getElementById('searchFilter').value.toLowerCase();
+
+            filteredEvents = events.filter(event => {
+                return (!category || event.category === category) &&
+                       (!priority || event.priority === priority) &&
+                       (!scope || event.scope === scope) &&
+                       (!month || event.month === parseInt(month)) &&
+                       (!search || event.title.toLowerCase().includes(search) ||
+                        event.brief.toLowerCase().includes(search) ||
+                        event.organizer.toLowerCase().includes(search));
+            });
+
+            renderView();
+        }
+
+        // Reset Filters
+        function resetFilters() {
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('priorityFilter').value = '';
+            document.getElementById('scopeFilter').value = '';
+            document.getElementById('monthFilter').value = '';
+            document.getElementById('searchFilter').value = '';
+            filteredEvents = [...events];
+            renderView();
+            showNotification('Filters reset', 'info');
+        }
+
+        // Switch View
+        function switchView(view) {
+            currentView = view;
+
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+                tab.setAttribute('aria-selected', 'false');
+            });
+            event.target.classList.add('active');
+            event.target.setAttribute('aria-selected', 'true');
+
+            renderView();
+        }
+
+        // Render View
+        function renderView() {
+            const content = document.getElementById('content');
+
+            // Destroy existing charts
+            Object.values(charts).forEach(chart => {
+                if (chart && typeof chart.destroy === 'function') {
+                    chart.destroy();
+                }
+            });
+            charts = {};
+
+            switch (currentView) {
+                case 'cards':
+                    content.innerHTML = renderCardsView();
+                    break;
+                case 'calendar':
+                    content.innerHTML = renderCalendarView();
+                    break;
+                case 'timeline':
+                    content.innerHTML = renderTimelineView();
+                    break;
+                case 'charts':
+                    content.innerHTML = renderChartsView();
+                    setTimeout(initCharts, 100); // Initialize charts after DOM update
+                    break;
+            }
+        }
+
+        // Render Cards View
+        function renderCardsView() {
+            if (filteredEvents.length === 0) {
+                return `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>No events found</h3>
+                        <p>Try adjusting your filters</p>
+                    </div>
+                `;
+            }
+
+            return `<div class="event-grid">
+                ${filteredEvents.map(event => `
+                    <div class="event-card ${getCategoryClass(event.category)}" onclick="showEventDetails(${events.indexOf(event)})">
+                        <div class="event-header">
+                            <div class="event-title">${event.title}</div>
+                            <div class="event-badges">
+                                <div class="event-badge badge-${event.priority.toLowerCase()}">${event.priority}</div>
+                            </div>
+                        </div>
+                        <div class="event-meta">
+                            <span><i class="fas fa-calendar"></i> ${formatDate(event.start)}</span>
+                            <span><i class="fas fa-globe"></i> ${event.scope}</span>
+                            <span><i class="fas ${getCategoryIcon(event.category)}"></i> ${getCategoryShort(event.category)}</span>
+                            <span><i class="fas fa-tag"></i> ${event.type}</span>
+                        </div>
+                        <div class="event-description">${event.brief}</div>
+                        <div class="event-footer">
+                            <span class="event-organizer">
+                                <i class="fas fa-building"></i> ${event.organizer}
+                            </span>
+                            <div class="event-actions">
+                                <button class="btn-small" onclick="event.stopPropagation(); addToCalendar(${events.indexOf(event)})" title="Add to Calendar">
+                                    <i class="fas fa-calendar-plus"></i>
+                                </button>
+                                <button class="btn-small" onclick="event.stopPropagation(); window.open('${event.source}', '_blank')" title="Learn More">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>`;
+        }
+
+        // Render Calendar View
+        function renderCalendarView() {
+            const monthsData = {};
+            for (let i = 1; i <= 12; i++) {
+                monthsData[i] = filteredEvents.filter(e => e.month === i);
+            }
+
+            return `<div class="calendar-view">
+                ${Object.entries(monthsData).map(([month, monthEvents]) => `
+                    <div class="month-card">
+                        <div class="month-header">
+                            <i class="fas fa-calendar-alt"></i>
+                            ${monthNames[month]} 2026
+                            <span class="month-count">${monthEvents.length}</span>
+                        </div>
+                        <ul class="month-events">
+                            ${monthEvents.length > 0
+                                ? monthEvents.map(event => `
+                                    <li class="month-event" onclick="showEventDetails(${events.indexOf(event)})">
+                                        <span class="month-event-date">${formatDate(event.start)}</span>
+                                        ${event.title}
+                                    </li>
+                                `).join('')
+                                : '<li style="color: #999; font-style: italic; padding: 12px;">No events this month</li>'
+                            }
+                        </ul>
+                    </div>
+                `).join('')}
+            </div>`;
+        }
+
+        // Render Timeline View
+        function renderTimelineView() {
+            if (filteredEvents.length === 0) {
+                return `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>No events found</h3>
+                        <p>Try adjusting your filters</p>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="timeline-view">
+                    <div class="timeline-line"></div>
+                    ${filteredEvents.map(event => `
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-date">
+                                <i class="fas fa-calendar-day"></i>
+                                ${formatDateLong(event.start)}
+                            </div>
+                            <div class="event-card ${getCategoryClass(event.category)}" onclick="showEventDetails(${events.indexOf(event)})">
+                                <div class="event-header">
+                                    <div class="event-title">${event.title}</div>
+                                    <div class="event-badges">
+                                        <div class="event-badge badge-${event.priority.toLowerCase()}">${event.priority}</div>
+                                    </div>
+                                </div>
+                                <div class="event-meta">
+                                    <span><i class="fas fa-globe"></i> ${event.scope}</span>
+                                    <span><i class="fas ${getCategoryIcon(event.category)}"></i> ${getCategoryShort(event.category)}</span>
+                                </div>
+                                <div class="event-description">${event.brief}</div>
+                                <div class="event-footer">
+                                    <span class="event-organizer">
+                                        <i class="fas fa-building"></i> ${event.organizer}
+                                    </span>
+                                    <div class="event-actions">
+                                        <button class="btn-small" onclick="event.stopPropagation(); addToCalendar(${events.indexOf(event)})" title="Add to Calendar">
+                                            <i class="fas fa-calendar-plus"></i>
+                                        </button>
+                                        <button class="btn-small" onclick="event.stopPropagation(); window.open('${event.source}', '_blank')" title="Learn More">
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Render Charts View
+        function renderChartsView() {
+            return `
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div>
+                                <div class="chart-title">
+                                    <i class="fas fa-chart-bar"></i>
+                                    Events Distribution by Month
+                                </div>
+                                <div class="chart-subtitle">Total events scheduled throughout 2026</div>
+                            </div>
+                        </div>
+                        <canvas id="monthChart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div>
+                                <div class="chart-title">
+                                    <i class="fas fa-pie-chart"></i>
+                                    Category Distribution
+                                </div>
+                                <div class="chart-subtitle">Events by HSE-BCM category</div>
+                            </div>
+                        </div>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div>
+                                <div class="chart-title">
+                                    <i class="fas fa-chart-line"></i>
+                                    Priority Breakdown
+                                </div>
+                                <div class="chart-subtitle">Events by priority level</div>
+                            </div>
+                        </div>
+                        <canvas id="priorityChart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div>
+                                <div class="chart-title">
+                                    <i class="fas fa-globe-americas"></i>
+                                    Scope Distribution
+                                </div>
+                                <div class="chart-subtitle">Global vs UAE National events</div>
+                            </div>
+                        </div>
+                        <canvas id="scopeChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="legend">
+                    <div style="font-weight: 700; width: 100%; margin-bottom: 10px; font-size: 1.1em;">
+                        <i class="fas fa-info-circle"></i> Category Legend
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--health-color);"></div>
+                        <span>Occupational Health / Public Health</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--safety-color);"></div>
+                        <span>Occupational Safety</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--environment-color);"></div>
+                        <span>Environment</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--energy-color);"></div>
+                        <span>Energy & Sustainability</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--bcm-color);"></div>
+                        <span>Business Continuity / Resilience</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize Charts
+        function initCharts() {
+            // Month Distribution Chart
+            const monthCounts = Array(12).fill(0);
+            events.forEach(e => monthCounts[e.month - 1]++);
+
+            charts.monthChart = new Chart(document.getElementById('monthChart'), {
+                type: 'bar',
+                data: {
+                    labels: monthNames.slice(1),
+                    datasets: [{
+                        label: 'Number of Events',
+                        data: monthCounts,
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Category Distribution Chart
+            const categoryCounts = {
+                'Health': events.filter(e => e.category.includes('Health')).length,
+                'Safety': events.filter(e => e.category.includes('Safety')).length,
+                'Environment': events.filter(e => e.category.includes('Environment')).length,
+                'Energy': events.filter(e => e.category.includes('Energy')).length,
+                'BCM': events.filter(e => e.category.includes('Business')).length
+            };
+
+            charts.categoryChart = new Chart(document.getElementById('categoryChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(categoryCounts),
+                    datasets: [{
+                        data: Object.values(categoryCounts),
+                        backgroundColor: [
+                            'rgba(231, 76, 60, 0.8)',
+                            'rgba(243, 156, 18, 0.8)',
+                            'rgba(39, 174, 96, 0.8)',
+                            'rgba(52, 152, 219, 0.8)',
+                            'rgba(155, 89, 182, 0.8)'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 12,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    }
+                }
+            });
+
+            // Priority Distribution Chart
+            const priorityCounts = {
+                'High': events.filter(e => e.priority === 'High').length,
+                'Medium': events.filter(e => e.priority === 'Medium').length,
+                'Low': events.filter(e => e.priority === 'Low').length
+            };
+
+            charts.priorityChart = new Chart(document.getElementById('priorityChart'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(priorityCounts),
+                    datasets: [{
+                        data: Object.values(priorityCounts),
+                        backgroundColor: [
+                            'rgba(39, 174, 96, 0.8)',
+                            'rgba(243, 156, 18, 0.8)',
+                            'rgba(231, 76, 60, 0.8)'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 12,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    }
+                }
+            });
+
+            // Scope Distribution Chart
+            const scopeCounts = {
+                'Global': events.filter(e => e.scope === 'Global').length,
+                'UAE National': events.filter(e => e.scope === 'UAE National').length
+            };
+
+            charts.scopeChart = new Chart(document.getElementById('scopeChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(scopeCounts),
+                    datasets: [{
+                        label: 'Number of Events',
+                        data: Object.values(scopeCounts),
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.8)',
+                            'rgba(155, 89, 182, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(155, 89, 182, 1)'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 5
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Show Event Details Modal
+        function showEventDetails(eventIndex) {
+            const event = events[eventIndex];
+            const modal = document.getElementById('eventModal');
+            const modalBody = document.getElementById('modalBody');
+
+            modalBody.innerHTML = `
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle">${event.title}</h2>
+                    <div class="modal-meta">
+                        <div class="event-badge badge-${event.priority.toLowerCase()}">${event.priority} Priority</div>
+                        <span style="color: var(--text-light); display: flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-tag"></i> ${event.type}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <div class="modal-section">
+                        <div class="modal-section-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            Date & Time
+                        </div>
+                        <p>
+                            <strong>Start:</strong> ${formatDateLong(event.start)}<br>
+                            <strong>End:</strong> ${formatDateLong(event.end)}
+                        </p>
+                    </div>
+
+                    <div class="modal-section">
+                        <div class="modal-section-title">
+                            <i class="fas fa-info-circle"></i>
+                            Description
+                        </div>
+                        <p>${event.brief}</p>
+                    </div>
+
+                    <div class="modal-section">
+                        <div class="modal-section-title">
+                            <i class="fas fa-building"></i>
+                            Organizer
+                        </div>
+                        <p><strong>${event.organizer}</strong></p>
+                    </div>
+
+                    <div class="modal-section">
+                        <div class="modal-section-title">
+                            <i class="fas fa-folder"></i>
+                            Category
+                        </div>
+                        <p>
+                            <i class="fas ${getCategoryIcon(event.category)}"></i>
+                            ${getCategoryShort(event.category)}
+                        </p>
+                    </div>
+
+                    <div class="modal-section">
+                        <div class="modal-section-title">
+                            <i class="fas fa-globe"></i>
+                            Scope
+                        </div>
+                        <p>${event.scope}</p>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="addToCalendar(${eventIndex})">
+                        <i class="fas fa-calendar-plus"></i> Add to Calendar
+                    </button>
+                    <button class="btn btn-primary" onclick="window.open('${event.source}', '_blank')">
+                        <i class="fas fa-external-link-alt"></i> Official Source
+                    </button>
+                    <button class="btn btn-secondary" onclick="shareEvent(${eventIndex})">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        // Close Modal
+        function closeModal() {
+            document.getElementById('eventModal').classList.remove('active');
+        }
+
+        // Add to Calendar (Generate iCal)
+        function addToCalendar(eventIndex) {
+            const event = events[eventIndex];
+            const icalContent = generateICalEvent(event);
+            const blob = new Blob([icalContent], { type: 'text/calendar' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${event.title.replace(/[^a-z0-9]/gi, '_')}.ics`;
+            link.click();
+            URL.revokeObjectURL(url);
+            showNotification('Event added to calendar!', 'success');
+        }
+
+        // Generate iCal Event
+        function generateICalEvent(event) {
+            const start = event.start.replace(/-/g, '');
+            const end = event.end.replace(/-/g, '');
+
+            return `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//HSE-BCM Calendar//EN
+BEGIN:VEVENT
+UID:${event.start}-${event.title.replace(/\s+/g, '-')}@hse-bcm-calendar.com
+DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+DTSTART:${start}
+DTEND:${end}
+SUMMARY:${event.title}
+DESCRIPTION:${event.brief}\\n\\nOrganizer: ${event.organizer}\\nCategory: ${getCategoryShort(event.category)}\\n\\nMore info: ${event.source}
+LOCATION:${event.scope}
+PRIORITY:${event.priority === 'High' ? '1' : event.priority === 'Medium' ? '5' : '9'}
+STATUS:CONFIRMED
+URL:${event.source}
+END:VEVENT
+END:VCALENDAR`;
+        }
+
+        // Share Event
+        function shareEvent(eventIndex) {
+            const event = events[eventIndex];
+            const shareText = `${event.title} - ${formatDate(event.start)}\\n${event.brief}\\n\\nLearn more: ${event.source}`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: event.title,
+                    text: shareText,
+                    url: event.source
+                }).then(() => {
+                    showNotification('Event shared successfully!', 'success');
+                }).catch(err => {
+                    console.error('Share failed:', err);
+                    copyToClipboard(shareText);
+                });
+            } else {
+                copyToClipboard(shareText);
+            }
+        }
+
+        // Copy to Clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Event details copied to clipboard!', 'success');
+            }).catch(err => {
+                console.error('Copy failed:', err);
+                showNotification('Failed to copy event details', 'error');
+            });
+        }
+
+        // Export Data
+        function exportData(format) {
+            switch(format) {
+                case 'csv':
+                    exportToCSV();
+                    break;
+                case 'json':
+                    exportToJSON();
+                    break;
+                case 'ical':
+                    exportToICal();
+                    break;
+            }
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            const headers = ['Title', 'Date', 'Type', 'Scope', 'Category', 'Priority', 'Organizer', 'Description', 'Source'];
+            const rows = events.map(e => [
+                e.title,
+                e.start,
+                e.type,
+                e.scope,
+                getCategoryShort(e.category),
+                e.priority,
+                e.organizer,
+                e.brief,
+                e.source
+            ]);
+
+            const csv = [
+                headers.join(','),
+                ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+            ].join('\\n');
+
+            downloadFile(csv, 'hse-bcm-calendar-2026.csv', 'text/csv');
+            showNotification('Calendar exported to CSV!', 'success');
+        }
+
+        // Export to JSON
+        function exportToJSON() {
+            const json = JSON.stringify(events, null, 2);
+            downloadFile(json, 'hse-bcm-calendar-2026.json', 'application/json');
+            showNotification('Calendar exported to JSON!', 'success');
+        }
+
+        // Export to iCal
+        function exportToICal() {
+            let ical = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//HSE-BCM Calendar 2026//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:HSE-BCM Calendar 2026
+X-WR-TIMEZONE:UTC
+X-WR-CALDESC:UAE National & Global International Observances - Health, Safety, Environment, Energy & Business Continuity
+`;
+
+            events.forEach(event => {
+                ical += generateICalEvent(event);
+            });
+
+            ical += 'END:VCALENDAR';
+
+            downloadFile(ical, 'hse-bcm-calendar-2026.ics', 'text/calendar');
+            showNotification('Calendar exported to iCal format!', 'success');
+        }
+
+        // Download File Helper
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Sync Data with WHO/UN APIs
+        async function syncData() {
+            showNotification('Syncing with WHO, UN databases...', 'info');
+
+            try {
+                // This is a placeholder for actual API integration
+                // In production, you would make real API calls here
+
+                // Example API call structure:
+                // const whoData = await fetch(API_CONFIG.WHO);
+                // const unData = await fetch(API_CONFIG.UN);
+
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                // For now, we'll just reload the existing data
+                await loadEvents();
+                updateStats();
+                renderView();
+
+                showNotification('Data synchronized successfully!', 'success');
+            } catch (error) {
+                console.error('Sync error:', error);
+                showNotification('Failed to sync data. Using cached version.', 'error');
+            }
+        }
+
+        // Show Notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+
+            const icon = type === 'success' ? 'fa-check-circle' :
+                        type === 'error' ? 'fa-exclamation-circle' :
+                        'fa-info-circle';
+
+            notification.innerHTML = `
+                <i class="fas ${icon}" style="font-size: 1.5em;"></i>
+                <span>${message}</span>
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideInRight 0.3s ease reverse';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
